@@ -22,9 +22,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (statuses.length > 0) {
+    //if (statuses.length > 0) {
       localStorage.setItem('statuses', JSON.stringify(statuses));
-    }
+    //}
   }, [statuses]);
 
   useEffect(() => {
@@ -34,6 +34,10 @@ const App = () => {
   }, [tasks]);
 
   const addNewStatus = () => {
+    if (newStatus.name === "" || newStatus.name === undefined || newStatus.name === null) {
+      alert("Please enter a valid status name ");
+      return;
+    }
     const updatedStatuses = [...statuses, newStatus];
     setStatuses(updatedStatuses);
     tasks[newStatus.name] = [];
@@ -106,6 +110,19 @@ const App = () => {
       setStatuses(reorderedStatuses);
     }
 
+  };
+
+  // const deletestatus = (index) => {
+  //   const removedStatus = statuses.splice(index, 1);
+  //   console.log(statuses);
+  //   console.log(removedStatus);
+  //   setStatuses(statuses);
+  // }
+
+  const deleteStatus = (index) => {
+    console.log(index);
+    setStatuses((prevStatuses) => prevStatuses.filter((_, i) => (i !== index)));
+    console.log(statuses);
   };
 
   return (
@@ -232,6 +249,7 @@ const App = () => {
                           tasks={tasks[status.name] || []}
                           setTaskModalOpen={setTaskModalOpen}
                           index={index}
+                          deleteStatus = {deleteStatus}
                         />
                       </div>
                     )}

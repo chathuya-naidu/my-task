@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'; // Import icons
+import { faChevronDown, faChevronUp, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Status = ({ status, tasks, setTaskModalOpen, index }) => {
+
+const Status = ({ status, tasks, setTaskModalOpen, index, deleteStatus }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
 
+
+
   return (
     <div className="status-row" style={{ backgroundColor: status.color }}>
-      <div className="status-header" onClick={toggleExpanded}>
-        <div className="status-title">
-          <h3>{status.name}</h3>
-        </div>
+      <div>
+        <div className="status-header" >
+          <div className="status-controls" onClick={toggleExpanded}>
 
-        <div className="status-controls">
+            <span className="toggle-icon">
+              {isExpanded ? (
+                <FontAwesomeIcon icon={faChevronDown} />
+              ) : (
+                <FontAwesomeIcon icon={faChevronUp} />
+              )}
+            </span>
 
-          <span className="toggle-icon">
-            {isExpanded ? (
-              <FontAwesomeIcon icon={faChevronDown} />
-            ) : (
-              <FontAwesomeIcon icon={faChevronUp} />
-            )}
-          </span>
+          </div>
+
+          <div className="status-title">
+            <h3>{(status.name.length > 15) ? (status.name.substring(0, 15) + "...") : status.name}</h3>
+          </div>
+          <div className="status-delete" onClick={() => deleteStatus(index)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </div>
+
         </div>
       </div>
+
       <button className="add-task-btn" onClick={() => setTaskModalOpen({ open: true, statusIndex: index })}>
         + Add Task
       </button>
